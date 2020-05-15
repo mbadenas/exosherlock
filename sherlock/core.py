@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 __all__ = ["get_min_value", "update_columns_with_min_err"]
 
