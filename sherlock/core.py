@@ -21,7 +21,29 @@ def _update_column_with_min_err(col_name, df_orig, df_fin):
     df_fin.loc[df_aux.index, ref_col] = df_aux[ref_col]
     return df_fin
 
-def update_columns_with_min_err(col_names, df_orig, df_fin):
+def update_columns_with_min_err(col_names, df_orig, df_fin, queries=None):
+    """Update columns of dataframe to a unique value per planet.
+
+    For every column in the ``col_names`` the selected value will be the one with
+    minimum error.
+
+    Parameters
+    ----------
+    col_names : str of list of str
+    df_orig : pandas.Dataframe
+    df_fin : pandas.Dataframe
+    queries : dict of {str: str}, optional
+
+    Returns
+    -------
+    pandas.Dataframe
+
+    """
+    if queries is None:
+        queries = {}
     for col_name in col_names:
-        df_fin = _update_column_with_min_err(col_name, df_orig, df_fin)
+        df_aux = df_orig
+        if col_name in queries:
+            df_aux = df_orig.query(queries[col_name])
+        df_fin = _update_column_with_min_err(col_name, df_aux, df_fin)
     return df_fin
