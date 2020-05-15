@@ -35,7 +35,7 @@ def get_local_exoarchive(
     return df
 
 
-def get_exoarchive(
+def get_remote_exoarchive(
     table: str = "exoplanets", extra_query: Optional[str] = None
 ) -> pd.DataFrame:
     """Download a table from the NASA Exoplanet Archive as a pandas.DataFrame.
@@ -57,3 +57,18 @@ def get_exoarchive(
         query = "&".join((query, extra_query))
     df = pd.read_csv(query, comment="#")
     return df
+
+
+def get_exoarchive(*args, local: bool = False, **kwargs) -> pd.DataFrame:
+    """Load data from the Exoplanet Archive database.
+
+    Parameters
+    ----------
+    local : bool, optional
+    kwargs
+        Passed to :func:`get_remote_exoarchive` or :func:`get_local_exoarchive` depending
+        on the value of ``local``
+    """
+    if local:
+        return get_local_exoarchive(*args, **kwargs)
+    return get_remote_exoarchive(*args, **kwargs)

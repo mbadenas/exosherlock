@@ -76,6 +76,7 @@ def get_from_exoarchive(
     col_names: Union[str, Iterable[str]],
     pre_queries: Optional[Mapping[str, str]] = None,
     post_query: Optional[str] = None,
+    **kwargs,
 ) -> DataFrame:
     """Download dataframe NASA Exoplanet Archive and query it.
 
@@ -84,8 +85,10 @@ def get_from_exoarchive(
     col_names : str of list of str
     pre_queries : dict of {str: str}, optional
     post_query : str, optional
+    kwargs
+        Passed as is to :func:`get_exoarchive`.
     """
-    exoarchive = get_exoarchive()
+    exoarchive = get_exoarchive(**kwargs)
     df_final = (
         exoarchive.query("default_flag == 1")
         .drop("default_flag", axis=1)
