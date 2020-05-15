@@ -35,6 +35,7 @@ setup(
     author="Mariona Badenas-Agusti, Oriol Abril-Pla",
     url="http://github.com/mbadenas/sherlock",
     packages=find_packages(),
+    package_data={"sherlock": ["data/*.csv"]},
     install_requires=get_requirements(REQUIREMENTS_FILE),
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
