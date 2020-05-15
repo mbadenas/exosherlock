@@ -1,5 +1,7 @@
 import numpy as np
 
+__all__ = ["get_min_value", "update_columns_with_min_err"]
+
 def get_min_value(col_name, df):
     ref_colname = "{}_refname".format(col_name.split("_")[0])
     cols = ["pl_name"] + [tmp.format(col_name) for tmp in ("{}", "{}err1", "{}err2")] + [ref_colname]
@@ -11,7 +13,7 @@ def get_min_value(col_name, df):
     df_aux = df_aux.loc[idxs].drop(err_col, axis=1)
     return df_aux
 
-def update_column_with_min_err(col_name, df_orig, df_fin):
+def _update_column_with_min_err(col_name, df_orig, df_fin):
     df_aux = get_min_value(col_name, df_orig).set_index("pl_name")
     *cols, ref_col = df_aux.columns
     df_fin.loc[df_aux.index, cols] = df_aux[cols]
@@ -19,7 +21,7 @@ def update_column_with_min_err(col_name, df_orig, df_fin):
     df_fin.loc[df_aux.index, ref_col] = df_aux[ref_col]
     return df_fin
 
-def eval_interesting_cols(special_cols, df_orig, df_fin):
-    for col in special_cols:
-        df_fin = update_column_with_min_err(col, df_orig, df_fin)
+def update_columns_with_min_err(col_names, df_orig, df_fin):
+    for col_name in col_names:
+        df_fin = _update_column_with_min_err(col_name, df_orig, df_fin)
     return df_fin

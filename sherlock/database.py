@@ -1,6 +1,8 @@
 from pathlib import Path
 import pandas as pd
 
+__all__ = ["get_exoarchive", "get_local_exoarchive"]
+
 def get_local_exoarchive(fname=None):
     if fname is None:
         dirname = Path(__file__).parent / "data"
