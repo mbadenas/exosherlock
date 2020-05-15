@@ -14,4 +14,4 @@ def get_local_exoarchive(fname=None):
 def get_exoarchive(table="exomultpars"):
     query = f"https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table={table}"
     df = pd.read_csv(query, comment="#")
-
+    return df
