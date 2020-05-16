@@ -1,23 +1,22 @@
-<img src="https://github.com/mbadenas/exosherlock/blob/master/doc/logo/exosherlock_logo.png" height=100></img>
+<img src="https://github.com/mbadenas/exosherlock/blob/master/doc/logo/exosherlock_logo.png" height=300></img>
 
 # exosherlock
-This package downloads the latest "Planetary Systems" table from the NASA Exoplanet Archive.
 
+ `exosherlock` is an open-source package designed to interact with the NASA Exoplanet Archive and download its [planetary system catalogs] https://exoplanetarchive.ipac.caltech.edu/docs/data.html) in a consistent and reliable way. In particular,
+ `exosherlock` provides the user with the possibility to download the most up-to-date catalog of confirmed planets\footnote{Last Update: May 2020}, query their own table of choice (see options in the *confirmed planets* table [here](https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.htmll), and load their own planetary systems catalog from the NASA Exoplanet Archive. 
+ 
 ## Documentation
 
-The exoplanet documentation can be found in the [official docs](https://mbadenas.github.io/exosherlock/index.html).
-First time users may find the [quickstart](https://arviz-devs.github.io/arviz/quickstart.html)
-to be helpful.
-
+The software's documentation can be found [here](https://mbadenas.github.io/exosherlock/index.html).
+First time users may find the [quickstart](https://arviz-devs.github.io/arviz/quickstart.html) helpful. 
 
 ## Installation
 
 ### Stable
-exosherlock is available for installation from [PyPI](https://pypi.org/project/exosherlock/).
 The latest stable version can be installed using pip:
 
 ```
-pip install arviz
+pip install sherlock
 ```
 
 ### Development
@@ -27,20 +26,18 @@ The latest development version can be installed from the master branch using pip
 pip install git+git://github.com/mbadenas/exosherlock.git
 ```
 
-## Citation
-Please cite `exosherlock` if you use it for your research.
-
-Here is the citation in BibTeX format
+## Attribution
+If you use this code, please cite `exosherlock` in your work. The citatation in BibTeX format is presented below. 
 
 ```
 
 ```
 
 ## Contributions
-`exosherlock` welcomes contributions. Before submitting a Pull Request for a
-new feature, please open an issue to discuss its inclusion and implementation
-details.
+
+`exosherlock` welcomes feedback and contributions. Before submitting a Pull Request for a
+new feature, please open an issue to discuss its inclusion and implementation details.
 
 ## Code of Conduct
 `exosherlock` wishes to maintain a positive community. Additional details
-can be found in the [Code of Conduct](https://github.com/mbadenas/exosherlock/blob/master/CODE_OF_CONDUCT.md)
+can be found in the [Code of Conduct](https://github.com/mbadenas/exosherlock/blob/master/CODE_OF_CONDUCT.md).
