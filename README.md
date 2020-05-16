@@ -12,7 +12,7 @@
 
 (1) Last Update of `exosherlock`'s internal catalog: May 2020.
 
-(2) A future release of `exosherlock` will use the new *alpha release* Planetary Systems catalog from the Archive.
+(2) A future release of `exosherlock` will use the new ["*Alpha Release* Planetary Systems"](https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=PS) catalog from the  NASA Exoplanet Archive.
 
 ## Documentation
 
