@@ -1,6 +1,6 @@
 .. _api:
 
-.. currentmodule:: sherlock
+.. currentmodule:: exosherlock
 
 API Reference
 =============

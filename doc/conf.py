@@ -12,21 +12,24 @@
 #
 import os
 import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from recommonmark.parser import CommonMarkParser
 
 import exosherlock
 
+
 class CustomCommonMarkParser(CommonMarkParser):
     def visit_document(self, node):
         pass
 
+
 # -- Project information -----------------------------------------------------
 
-project = 'exosherlock'
-copyright = '2020, Mariona Badenas-Agusti, Oriol Abril-Pla'
-author = 'Mariona Badenas-Agusti, Oriol Abril-Pla'
+project = "exosherlock"
+copyright = "2020, Mariona Badenas-Agusti, Oriol Abril-Pla"
+author = "Mariona Badenas-Agusti, Oriol Abril-Pla"
 
 # The full version, including alpha/beta/rc tags
 version = exosherlock.__version__
@@ -54,12 +57,12 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ["_build", "build", "Thumbs.db", ".DS_Store"]
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -67,12 +70,14 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'pyramid'
+html_theme = "msmb_theme"
+import msmb_theme
+html_theme_path = [msmb_theme.get_html_theme_path()]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+# html_static_path = ['_static']
 
 # ipython directive configuration
 ipython_warning_is_error = False
@@ -88,15 +93,17 @@ html_short_title = "exosherlock"
 
 
 # The name of an image file (relative to this directory)
-html_logo = "logo/logo.png"
+html_logo = "logo/exosherlock_logo.png"
 
 
 # The name of an image file (relative to this directory) to use as a favicon
 html_favicon = "logo/favicon.ico"
 
+
 def setup(app):
-    app.add_source_suffix('.md', 'markdown')
+    app.add_source_suffix(".md", "markdown")
     app.add_source_parser(CustomCommonMarkParser)
+
 
 # Example configuration for intersphinx
 intersphinx_mapping = {
