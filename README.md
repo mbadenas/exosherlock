@@ -4,7 +4,7 @@
 
 # exosherlock
 
- `exosherlock` is an open-source package designed to interact with and download the [planetary systems catalogs](https://exoplanetarchive.ipac.caltech.edu/docs/data.html) of the NASA Exoplanet Archive in a consistent and reliable way. Through its user-friendly interface, `exosherlock` provides the user with the possibility to: 
+ `exosherlock` is an open-source set, user-friendly package designed to interact with and download the [planetary systems catalogs](https://exoplanetarchive.ipac.caltech.edu/docs/data.html) of the NASA Exoplanet Archive in a consistent and reliable way. In particular, `exosherlock` offers the possibility to: 
  
 - Download the most up-to-date catalog of [Confirmed Planets](https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=planets)<sup>1,2</sup>, or
 - Query and retrieve a Planetary Systems catalog of their choice --see options [here](https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.html), or
