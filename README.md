@@ -1,6 +1,7 @@
 <p align="center">
 	<img src="https://github.com/mbadenas/exosherlock/blob/master/doc/logo/exosherlock_logo.png" height=300></img>
 </p>
+
 # exosherlock
 
  `exosherlock` is an open-source package designed to interact with and download the [planetary systems catalogs](https://exoplanetarchive.ipac.caltech.edu/docs/data.html) of the NASA Exoplanet Archive in a consistent and reliable way. Through its user-friendly interface, `exosherlock` provides the user with the possibility to: 
