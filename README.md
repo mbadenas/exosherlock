@@ -1,9 +1,13 @@
-<img src="https://github.com/mbadenas/exosherlock/blob/master/doc/logo/exosherlock_logo.png" height=300></img>
-
+<p align="center">
+	<img src="https://github.com/mbadenas/exosherlock/blob/master/doc/logo/exosherlock_logo.png" height=300></img>
+</p>
 # exosherlock
 
- `exosherlock` is an open-source package designed to interact with the NASA Exoplanet Archive and download its [planetary system catalogs] https://exoplanetarchive.ipac.caltech.edu/docs/data.html) in a consistent and reliable way. In particular,
- `exosherlock` provides the user with the possibility to download the most up-to-date catalog of confirmed planets\footnote{Last Update: May 2020}, query their own table of choice (see options in the *confirmed planets* table [here](https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.htmll), and load their own planetary systems catalog from the NASA Exoplanet Archive. 
+ `exosherlock` is an open-source package designed to interact with and download the [planetary systems catalogs](https://exoplanetarchive.ipac.caltech.edu/docs/data.html) of the NASA Exoplanet Archive in a consistent and reliable way. Through its user-friendly interface, `exosherlock` provides the user with the possibility to: 
+ 
+- Download the most up-to-date catalog of confirmed planets<sup>Last Update: May 2020</sup>, or
+- Query and retrieve a Planetary Systems catalog of their choice (see options [here](https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.htmll), or
+- Load a Planetary Systems Catalog previously downloaded by the user from the NASA Exoplanet Archive. 
  
 ## Documentation
 
@@ -13,6 +17,7 @@ First time users may find the [quickstart](https://arviz-devs.github.io/arviz/qu
 ## Installation
 
 ### Stable
+The most recent version of `exosherlock is available on [PyPI](https://pypi.org/project/exosherlock/).
 The latest stable version can be installed using pip:
 
 ```
