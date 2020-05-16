@@ -10,8 +10,9 @@
 - Query and retrieve a Planetary Systems catalog of their choice (see options [here](https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.htmll)), or
 - Load a local Planetary Systems catalog, previously downloaded by the user from the NASA Exoplanet Archive. Such catalog may, e.g., only contain a subset of all the columns listed on the full Planetary Systems catalog. 
 
-<font size="0.5"> (1) Last Update of `exosherlock`'s internal catalog: May 2020</font>
-<font size="0.5"> (2) A future release of `exosherlock` will use the new *alpha release* Planetary Systems catalog from the Archive.</font>
+(1) Last Update of `exosherlock`'s internal catalog: May 2020.
+
+(2) A future release of `exosherlock` will use the new *alpha release* Planetary Systems catalog from the Archive.
 
 ## Documentation
 
@@ -51,7 +52,7 @@ If you use this code, please cite `exosherlock` in your work. The citatation in 
 
 **Authors**: Mariona Badenas-Agusti (MIT), Oriol Abril-Pla (UpF)
 
-**License**: MIT. 
+**License**: [MIT](https://github.com/mbadenas/exosherlock/blob/master/LICENSE). 
 
 **Contributors**: `exosherlock` welcomes feedback and contributions. Before submitting a Pull Request for a
 new feature, please open an issue to discuss its inclusion and implementation details.
