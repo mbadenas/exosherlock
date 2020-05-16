@@ -41,17 +41,19 @@ If you use this code, please cite `exosherlock` in your work. The citatation in 
 ```
 @misc{exosherlock,
   auhor = {{Badenas-Agusti}, M. and {Abril-Pla}, O.},
-  title = {exosherlock: Data Acquisition from the NASA Exoplanet Archive Catalogs.},
+  title = {exosherlock: Data Acquisition from the NASA Exoplanet Archive.},
   year  = {2020},
   url   = {https://github.com/mbadenas/exosherlock},
 }
 ```
 
-## Contributions
+## Authorship and Contributions
 
-Contributors: Mariona Badenas-Agusti (MIT), Oriol Abril-Pla (UpF)
+**Authors**: Mariona Badenas-Agusti (MIT), Oriol Abril-Pla (UpF)
 
-`exosherlock` welcomes feedback and contributions. Before submitting a Pull Request for a
+**License**: MIT. 
+
+**Contributors**: `exosherlock` welcomes feedback and contributions. Before submitting a Pull Request for a
 new feature, please open an issue to discuss its inclusion and implementation details.
 
 ## Code of Conduct
