@@ -86,6 +86,14 @@ source_suffix = [".rst", ".md"]
 # A shorter title for the navigation bar.  Default is the same as html_title.
 html_short_title = "exosherlock"
 
+
+# The name of an image file (relative to this directory)
+html_logo = "logo/logo.png"
+
+
+# The name of an image file (relative to this directory) to use as a favicon
+html_favicon = "logo/favicon.ico"
+
 def setup(app):
     app.add_source_suffix('.md', 'markdown')
     app.add_source_parser(CustomCommonMarkParser)

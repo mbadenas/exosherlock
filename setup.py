@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 PROJECT_ROOT = Path(__file__).parent
 REQUIREMENTS_FILE = PROJECT_ROOT / "requirements.txt"
 README_FILE = PROJECT_ROOT / "README.md"
-VERSION_FILE = PROJECT_ROOT / "sherlock" / "__init__.py"
+VERSION_FILE = PROJECT_ROOT / "exosherlock" / "__init__.py"
 
 
 def get_requirements(path):
@@ -28,14 +28,14 @@ def get_version():
     raise RuntimeError("Unable to find version in %s." % (VERSION_FILE,))
 
 setup(
-    name="sherlock",
+    name="exosherlock",
     license="MIT",
     version=get_version(),
     description="Access and subset the NASA Exoplanet Archive",
     author="Mariona Badenas-Agusti, Oriol Abril-Pla",
-    url="http://github.com/mbadenas/sherlock",
+    url="http://github.com/mbadenas/exosherlock",
     packages=find_packages(),
-    package_data={"sherlock": ["data/*.csv"]},
+    package_data={"exosherlock": ["data/*.csv"]},
     install_requires=get_requirements(REQUIREMENTS_FILE),
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
