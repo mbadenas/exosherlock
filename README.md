@@ -7,12 +7,12 @@
  `exosherlock` is an open-source package designed to interact with and download the [planetary systems catalogs](https://exoplanetarchive.ipac.caltech.edu/docs/data.html) of the NASA Exoplanet Archive in a consistent and reliable way. Through its user-friendly interface, `exosherlock` provides the user with the possibility to: 
  
 - Download the most up-to-date catalog of [Confirmed Planets](https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=planets)<sup>1,2</sup>, or
-- Query and retrieve a Planetary Systems catalog of their choice (see options [here](https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.html)), or
+- Query and retrieve a Planetary Systems catalog of their choice --see options [here](https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.html), or
 - Load a local Planetary Systems catalog, previously downloaded by the user from the NASA Exoplanet Archive. Such catalog may, e.g., only contain a subset of all the columns listed on the full Planetary Systems catalog. 
 
 (1) Last Update of `exosherlock`'s internal catalog: May 2020.
 
-(2) A future release of `exosherlock` will use the new ["*Alpha Release* Planetary Systems"](https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=PS) catalog from the  NASA Exoplanet Archive.
+(2) A future release of `exosherlock` will use the new "*Alpha Release* Planetary Systems" [catalog] (https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=PS) from the  NASA Exoplanet Archive.
 
 ## Documentation
 
@@ -22,7 +22,7 @@ First time users may find the [quickstart](https://mbadenas.github.io/exosherloc
 ## Installation
 
 ### Stable
-The most recent version of `exosherlock is available on [PyPI](https://pypi.org/project/exosherlock/).
+The most recent version of `exosherlock` is available on [PyPI](https://pypi.org/project/exosherlock/).
 The latest stable version can be installed using pip:
 
 ```
