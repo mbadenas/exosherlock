@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from recommonmark.parser import CommonMarkParser
 
-import sherlock
+import exosherlock
 
 class CustomCommonMarkParser(CommonMarkParser):
     def visit_document(self, node):
@@ -24,12 +24,12 @@ class CustomCommonMarkParser(CommonMarkParser):
 
 # -- Project information -----------------------------------------------------
 
-project = 'sherlock'
+project = 'exosherlock'
 copyright = '2020, Mariona Badenas-Agusti, Oriol Abril-Pla'
 author = 'Mariona Badenas-Agusti, Oriol Abril-Pla'
 
 # The full version, including alpha/beta/rc tags
-version = sherlock.__version__
+version = exosherlock.__version__
 release = version
 
 master_doc = "index"
@@ -84,7 +84,7 @@ numpydoc_show_class_members = False
 source_suffix = [".rst", ".md"]
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
-html_short_title = "sherlock"
+html_short_title = "exosherlock"
 
 def setup(app):
     app.add_source_suffix('.md', 'markdown')
