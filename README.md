@@ -26,7 +26,7 @@ The most recent version of `exosherlock` is available on [PyPI](https://pypi.org
 The latest stable version can be installed using pip:
 
 ```
-pip install sherlock
+pip install exosherlock
 ```
 
 ### Development
