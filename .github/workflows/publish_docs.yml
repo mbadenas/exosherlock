@@ -14,7 +14,7 @@ jobs:
     # build html docs at doc/_build folder
     - uses: ammaraskar/sphinx-action@master
       with:
-        pre-build-command: "pip install -r requirements.txt -r requirements-dev.txt"
+        pre-build-command: "apt-get update -y && apt-get install -y pandoc && pip install -r requirements.txt -r requirements-dev.txt"
         build-command: "sphinx-build -b html . _build"
         docs-folder: "doc/"
     # Publish built docs to gh-pages branch.
