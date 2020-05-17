@@ -87,6 +87,10 @@ def get_from_exoarchive(
     post_query : str, optional
     kwargs
         Passed as is to :func:`get_exoarchive`.
+
+    Returns
+    -------
+    pandas.DataFrame
     """
     exoarchive = get_exoarchive(**kwargs)
     df_final = (
