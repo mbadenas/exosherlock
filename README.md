@@ -1,23 +1,32 @@
 <p align="center">
-	<img src="https://github.com/mbadenas/exosherlock/blob/master/doc/logo/exosherlock_logo.png" height=250></img>
+  <img src="https://github.com/mbadenas/exosherlock/blob/master/doc/logo/exosherlock_logo.png" height=250></img>
 </p>
 
 # exosherlock
 
- `exosherlock` is an open-source set, user-friendly package designed to interact with and download the [planetary systems catalogs](https://exoplanetarchive.ipac.caltech.edu/docs/data.html) of the NASA Exoplanet Archive in a consistent and reliable way. In particular, `exosherlock` offers the possibility to: 
- 
-- Download the most up-to-date catalog of [Confirmed Planets](https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=planets)<sup>1,2</sup>, or
-- Query and retrieve a Planetary Systems catalog of their choice --see options [here](https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.html), or
-- Load a local Planetary Systems catalog, previously downloaded by the user from the NASA Exoplanet Archive. Such catalog may, e.g., only contain a subset of all the columns listed on the full Planetary Systems catalog. 
+ `exosherlock` is an open-source set, user-friendly package designed to interact with and
+ download the [planetary systems catalogs](https://exoplanetarchive.ipac.caltech.edu/docs/data.html)
+ of the NASA Exoplanet Archive in a consistent and reliable way. In particular, `exosherlock`
+ offers the possibility to:
+
+- Download the most up-to-date catalog of
+  [Confirmed Planets](https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=planets)<sup>1,2</sup>, or
+- Query and retrieve a Planetary Systems catalog of their choice --see options
+  [here](https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.html), or
+- Load a local Planetary Systems catalog, previously downloaded by the user from
+  the NASA Exoplanet Archive. Such catalog may, e.g., only contain a subset of all
+  the columns listed on the full Planetary Systems catalog.
 
 (1) Last Update of `exosherlock`'s internal catalog: May 2020.
 
-(2) A future release of `exosherlock` will use the new "*Alpha Release* Planetary Systems" [catalog](https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=PS) from the NASA Exoplanet Archive.
+(2) A future release of `exosherlock` will use the new "*Alpha Release* Planetary Systems"
+[catalog](https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=PS)
+from the NASA Exoplanet Archive.
 
 ## Documentation
 
 The software's documentation can be found [here](https://mbadenas.github.io/exosherlock/index.html).
-First time users may find the [quickstart](https://mbadenas.github.io/exosherlock/quickstart.html) helpful. 
+First time users may find the [quickstart](https://mbadenas.github.io/exosherlock/quickstart.html) helpful.
 
 ## Installation
 
@@ -37,7 +46,7 @@ pip install git+git://github.com/mbadenas/exosherlock.git
 ```
 
 ## Attribution
-If you use this code, please cite `exosherlock` in your work. The citatation in BibTeX format is presented below. 
+If you use this code, please cite `exosherlock` in your work. The citatation in BibTeX format is presented below.
 
 ```
 @misc{exosherlock,
@@ -50,9 +59,9 @@ If you use this code, please cite `exosherlock` in your work. The citatation in 
 
 ## Authorship and Contributions
 
-**Authors**: Mariona Badenas-Agusti (MIT), Oriol Abril-Pla (UpF)
+**Authors**: Mariona Badenas-Agusti (MIT), Oriol Abril-Pla (UPF)
 
-**License**: [MIT](https://github.com/mbadenas/exosherlock/blob/master/LICENSE). 
+**License**: [MIT](https://github.com/mbadenas/exosherlock/blob/master/LICENSE).
 
 **Contributors**: `exosherlock` welcomes feedback and contributions. Before submitting a Pull Request for a
 new feature, please open an issue to discuss its inclusion and implementation details.

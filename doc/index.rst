@@ -1,4 +1,4 @@
-Welcome to sherlock's documentation!
+Welcome to exosherlock's documentation!
 ====================================
 Smoothing your interactions with the
 `NASA Exoplanet Archive <https://exoplanetarchive.ipac.caltech.edu/index.html>`_
