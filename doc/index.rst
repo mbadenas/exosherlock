@@ -1,5 +1,5 @@
 Welcome to exosherlock's documentation!
-====================================
+=======================================
 Smoothing your interactions with the
 `NASA Exoplanet Archive <https://exoplanetarchive.ipac.caltech.edu/index.html>`_
 with Python and `pandas <https://exoplanetarchive.ipac.caltech.edu/index.html>`_.
