@@ -15,7 +15,7 @@ jobs:
     - uses: ammaraskar/sphinx-action@master
       with:
         pre-build-command: "pip install -r requirements-dev.txt"
-        build-command: "sphinx-build -b html doc doc/_build"
+        build-command: "sphinx-build -b html . _build"
         docs-folder: "doc/"
     # Publish built docs to gh-pages branch.
     # ===============================
