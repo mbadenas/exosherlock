@@ -9,7 +9,7 @@ from astroquery.utils.tap.core import TapPlus
 
 from ._dtypes import DTYPES_CONFIRMED, DTYPES_PS
 
-__all__ = ["get_exoarchive"]
+__all__ = ["get_exoarchive", "load_catalog"]
 
 BASE_URL = "https://exoplanetarchive.ipac.caltech.edu"
 OLD_API_TABLES = ("exoplanets", "compositepars", "exomultpars", "aliastable", "microlensing")
