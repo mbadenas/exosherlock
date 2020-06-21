@@ -1,0 +1,6 @@
+exosherlock.update\_columns\_with\_min\_err
+===========================================
+
+.. currentmodule:: exosherlock
+
+.. autofunction:: update_columns_with_min_err

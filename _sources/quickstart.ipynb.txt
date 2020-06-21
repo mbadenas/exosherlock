@@ -1,0 +1,276 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Quickstart Guide"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import exosherlock"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 1. `get_exoarchive`: Read a Catalog from the NASA Exoplanet Archive\n",
+    "The function `get_exoarchive` allows the user to download the latest version of the NASA Exoplanet Archive\n",
+    "(NEA) database or read a local catalog from the NEA after a manual download. For convenience, `exosherlock` includes a .csv file downloaded from the NEA. This file corresponds to the \"Alpha Release\" Planetary Systems catalog and is automatically loaded if no filename is passed when calling `get_exoarchive`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "scrolled": false
+   },
+   "outputs": [],
+   "source": [
+    "complete_catalog = exosherlock.get_exoarchive(local=True, table=\"ps\")\n",
+    "complete_catalog.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The \"Alpha Release\" Planetary Systems database has a `default_flag` column, which can either be 0 or 1. The `complete_catalog` Dataframe shows all entries, regardless of the `default_flag` parameter. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Setting `default_flag == 1`: "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "If you are interested in having **one** row per planet, in which each column contains the NEA default paramters, you can download NEA's default catalog by setting `default_pars=True`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "catalog = exosherlock.get_exoarchive(local=True, table=\"ps\", default_pars=True)\n",
+    "catalog.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In contrast to the `complete_catalog` DataFrame, `catalog` does not have multiple rows for a given planet. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 2. `get_from_exoarchive`: "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "But, what if you want to see all the available measurements for a given planet? We could be interested in generating a catalog with all the available references for a given object. Or we may want to select a subset of parameters, based on `exosherlock`'s \"minimum error\" method; indeed, imagine there is a planet with only 1 mass measurement but with 5 planetary radii measurements. Which radius value should we use? The `exosherlock` package will keep the only mass measurement and choose the radius value --out of the five-- that has the lowest total error."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To select the data included in the DataFrame with more detail, we can use `get_from_exoarchive`. Tihs command selects the values with the lowest reported error for a user-defined subset of columns and the value from the default parameter set for all other columns. Moreover, it also integrates querying into the workflow.\n",
+    "\n",
+    "One simple example would be including the measures with lowest reported error for `pl_rade` and `st_rad`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "catalog1 = exosherlock.get_from_exoarchive(\n",
+    "    local = True, \n",
+    "    table = \"ps\",\n",
+    "    col_names = [\"pl_rade\", \"st_rad\"],\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can now check that for some objects the value is the same as the one in with `default_flag == 1`, but that is not always the case:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "pct = np.isclose(catalog.pl_rade, catalog1.pl_rade).mean() * 100\n",
+    "print(f\"The value in the default parameter set is the one with\\n\\\n",
+    "lowest reported error for {pct:.1f} % of the planets\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "`exosherlock` automatically stores the references used for all columns passed as `col_names` in a new column: `<col_name>_ref`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "catalog1.loc[[\"55 Cnc e\"],[\"pl_rade_ref\", \"pl_refname\"]]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Querying\n",
+    "Querying capabilities are possible thanks to [`pandas.DataFrame.query`](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#indexing-query). Here we assume you are familiar with this method.\n",
+    "\n",
+    "`get_from_exoarchive` supports 2 types of queries: queries enforced **before** selecting the values with minimum error and queries enforced **after** selecting the values with minimum error. Let's dive in with one example:"
+   ]
+  },
+  {
+   "cell_type": "raw",
+   "metadata": {
+    "raw_mimetype": "text/restructuredtext"
+   },
+   "source": [
+    "====  =======  =====  ====\n",
+    "name  measure  error  type\n",
+    "====  =======  =====  ====\n",
+    "a     2        .3     I\n",
+    "a     2.3      .6     I\n",
+    "a     1.9      .2     II\n",
+    "b     7        .1     I\n",
+    "b     8        .5     II\n",
+    "====  =======  =====  ===="
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "If we select the measures with lowest error for every object, we would end up with the 3d and 4th rows. Then, selecting only objects whose measure is of type `I` removes `a` from the dataset even though `a` has two measures of type `I` available. \n",
+    "\n",
+    "However, uf we first select only the measures of type `I` and then select the measure with lowest error, `a` would still be present in the final dataset.\n",
+    "\n",
+    "`get_from_exoarchive` has `pre_queries` and `post_query` to handle both cases."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Using `pre_queries`\n",
+    "`pre_queries` is thought to be applied on a per column basis, thus, restricting the mass measurement on a specific type of measure is done independently than restricting the radius measurement. One paper may report the radius with great accuracy while reporting a type of measure for the mass we are not interested in, discarding the radius measurement because the mass measurement is not of the desired type seems uncalled for.\n",
+    "\n",
+    "For this main reason, `pre_queries` takes a dictionary whose keys are the colum for which the query is to be applied and the value is the query itself (passed to `pandas.Dataframe.query`). Here is one example to select only the masses whose measure is available (discarding the `Mass*sin(i)` measurements:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mass_catalog = exosherlock.get_from_exoarchive(\n",
+    "    local = True, \n",
+    "    table = \"ps\",\n",
+    "    col_names = [\"pl_masse\"],\n",
+    "    pre_queries={\"pl_masse\": \"pl_bmassprov == 'Mass'\"}\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<div class=\"alert alert-warning\">\n",
+    "\n",
+    "Note that while the condition on `pl_bmassprov` is enforced, the values for `pl_bmassprov` are not updated. Thus, `pl_bmassprov` will no longer refer to the value of `pl_masse` in its same row but to the value in the default parameter set!\n",
+    "\n",
+    "</div>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Using `post_query`\n",
+    "`post_query` is equivalent to `get_from_exoarchive().query(post_query)`, it is basically provided for convenience and readability. We can combine it with the two previous examples:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "query_catalog = exosherlock.get_from_exoarchive(\n",
+    "    local = True, \n",
+    "    table = \"ps\",\n",
+    "    col_names = [\"pl_rade\", \"st_rad\", \"pl_masse\"],\n",
+    "    pre_queries={\"pl_masse\": \"pl_bmassprov == 'Mass'\"},\n",
+    "    post_query=\"pl_rade < 4 & st_rad > .2\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Raw Cell Format",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.7"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

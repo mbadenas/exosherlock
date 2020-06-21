@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>exosherlock.database &mdash; exosherlock 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/msmb.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="../../_static/js/versions.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/exosherlock_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">exosherlock</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>exosherlock.database</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for exosherlock.database</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;I/O capabilites.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pandas._typing</span> <span class="kn">import</span> <span class="n">FilePathOrBuffer</span>
+<span class="kn">from</span> <span class="nn">astroquery.utils.tap.core</span> <span class="kn">import</span> <span class="n">TapPlus</span>
+
+<span class="kn">from</span> <span class="nn">._dtypes</span> <span class="kn">import</span> <span class="n">DTYPES_CONFIRMED</span><span class="p">,</span> <span class="n">DTYPES_PS</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;get_exoarchive&quot;</span><span class="p">,</span> <span class="s2">&quot;load_catalog&quot;</span><span class="p">]</span>
+
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s2">&quot;https://exoplanetarchive.ipac.caltech.edu&quot;</span>
+<span class="n">OLD_API_TABLES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;exoplanets&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compositepars&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;exomultpars&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aliastable&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;microlensing&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_download_ps_table</span><span class="p">():</span>
+    <span class="n">exoarch</span> <span class="o">=</span> <span class="n">TapPlus</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://exoplanetarchive.ipac.caltech.edu/TAP&quot;</span><span class="p">)</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="n">exoarch</span><span class="o">.</span><span class="n">launch_job_async</span><span class="p">(</span><span class="s2">&quot;select * from ps&quot;</span><span class="p">)</span>
+    <span class="c1"># TODO: fix dtype conversion</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">get_results</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;_is_ps_table&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<span class="k">def</span> <span class="nf">_download_old_api_table</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">table</span> <span class="o">==</span> <span class="s2">&quot;exoplanets&quot;</span><span class="p">:</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">DTYPES_CONFIRMED</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{BASE_URL}</span><span class="s2">/cgi-bin/nstedAPI/nph-nstedAPI?table=</span><span class="si">{table}</span><span class="s2">&amp;select=*&amp;formal=csv&quot;</span>
+    <span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;_is_ps_table&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<span class="k">def</span> <span class="nf">_read_local_catalog</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">,</span> <span class="s2">&quot;#&quot;</span><span class="p">)</span>
+    <span class="n">aux_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">aux_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;usecols&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">aux</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;pl_name&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">aux_kwargs</span><span class="p">)</span>
+    <span class="n">is_ps_table</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">aux</span><span class="o">.</span><span class="n">pl_name</span><span class="p">))</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">aux</span><span class="o">.</span><span class="n">pl_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_ps_table</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;dtype&quot;</span><span class="p">,</span> <span class="n">DTYPES_PS</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># TODO: clever way to see if table is of confirmed planets?</span>
+            <span class="n">aux_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">aux_kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;dtype&quot;</span><span class="p">,</span> <span class="n">DTYPES_CONFIRMED</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="c1"># no dtype goodness, users are on their own, either they pass dtype info</span>
+            <span class="c1"># as kwarg or get warnings and &quot;bad&quot; behaviour</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;_is_ps_table&quot;</span><span class="p">,</span> <span class="n">is_ps_table</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<span class="k">def</span> <span class="nf">_download_from_figshare</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;_download_from_figshare() is not implemented yet&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">load_catalog</span><span class="p">(</span><span class="n">table</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FilePathOrBuffer</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load a local or remote catalog as pandas DataFrame.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    table : str, path object or file-like object, optional</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Passed to :func:`pandas:pandas.read_csv`</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">table</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;ps&quot;</span><span class="p">,</span> <span class="s2">&quot;planetary_systems&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_download_ps_table</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">OLD_API_TABLES</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_download_old_api_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">table</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_download_from_figshare</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">_read_local_catalog</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_exoarchive"><a class="viewcode-back" href="../../generated/exosherlock.get_exoarchive.html#exosherlock.get_exoarchive">[docs]</a><span class="k">def</span> <span class="nf">get_exoarchive</span><span class="p">(</span>
+    <span class="n">table</span><span class="o">=</span><span class="s2">&quot;exoplanets&quot;</span><span class="p">,</span>
+    <span class="n">fname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FilePathOrBuffer</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">default_pars</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">local</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Read a table form the NASA Exoplanet Archive as a pandas DataFrame.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    table : str, optional</span>
+<span class="sd">        Which table from the exoplanet archive will be read. Used for custom dtypes</span>
+<span class="sd">        which reduce memory usage and allow extra functionalities compared to</span>
+<span class="sd">        automatic dtype parsing.</span>
+<span class="sd">    fname : str, optional</span>
+<span class="sd">        Name of the file to import as dataframe. By default, the csv file provided</span>
+<span class="sd">        by the package is loaded. Ignored if ``local==False``.</span>
+<span class="sd">    default_pars : bool, optional</span>
+<span class="sd">        If True, returns only the subset with ``default_flag == 1``.</span>
+<span class="sd">    local : bool, optional</span>
+<span class="sd">        When true, the local csv file at ``fname`` is read.</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Passed to :func:`pandas:pandas.read_csv`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">local</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dirname</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">dirname</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">is_file</span><span class="p">()]</span>
+            <span class="k">if</span> <span class="n">files</span><span class="p">:</span>
+                <span class="n">fname</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># TODO: use astroquery</span>
+        <span class="k">if</span> <span class="n">table</span> <span class="o">==</span> <span class="s2">&quot;ps&quot;</span><span class="p">:</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{BASE_URL}</span><span class="s2">/TAP/sync?query=select+*+from+ps&amp;format=csv&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=</span><span class="si">{table}</span><span class="s2">&quot;</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">,</span> <span class="s2">&quot;#&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;ps&quot;</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;dtype&quot;</span><span class="p">,</span> <span class="n">DTYPES_PS</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">table</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;confirmed&quot;</span><span class="p">,</span> <span class="s2">&quot;exoplanets&quot;</span><span class="p">):</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;dtype&quot;</span><span class="p">,</span> <span class="n">DTYPES_CONFIRMED</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">default_pars</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;default_flag == 1&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Mariona Badenas-Agusti, Oriol Abril-Pla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  <script>
+    var versions_json_url = ''
+</script>
+
+<div class="rst-versions" data-toggle="rst-versions" role="note"
+     aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+        0.1.0
+      <span class="fa fa-caret-down"></span>
+    </span>
+
+    <div class="rst-other-versions">
+        <dl id="versionselector">
+            <dt>Other Versions</dt>
+        </dl>
+
+    </div>
+</div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

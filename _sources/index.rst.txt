@@ -1,14 +1,15 @@
-.. No Errors Test Project documentation master file, created by
-   sphinx-quickstart on Fri Aug 30 17:07:56 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to No Errors Test Project's documentation!
-==================================================
+Welcome to exosherlock's documentation!
+=======================================
+Smoothing your interactions with the
+`NASA Exoplanet Archive <https://exoplanetarchive.ipac.caltech.edu/index.html>`_
+with Python and `pandas <https://exoplanetarchive.ipac.caltech.edu/index.html>`_.
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Hello World!
+  :maxdepth: 2
+  :caption: Contents:
+
+  quickstart
+  api
 
 
 

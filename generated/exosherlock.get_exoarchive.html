@@ -1,0 +1,272 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>exosherlock.get_exoarchive &mdash; exosherlock 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/msmb.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="../_static/js/versions.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="exosherlock.get_from_exoarchive" href="exosherlock.get_from_exoarchive.html" />
+    <link rel="prev" title="API Reference" href="../api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/exosherlock_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">exosherlock.get_exoarchive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exosherlock.get_from_exoarchive.html">exosherlock.get_from_exoarchive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exosherlock.update_columns_with_min_err.html">exosherlock.update_columns_with_min_err</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">exosherlock</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
+      <li>exosherlock.get_exoarchive</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/generated/exosherlock.get_exoarchive.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="exosherlock-get-exoarchive">
+<h1>exosherlock.get_exoarchive<a class="headerlink" href="#exosherlock-get-exoarchive" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="exosherlock.get_exoarchive">
+<code class="sig-prename descclassname">exosherlock.</code><code class="sig-name descname">get_exoarchive</code><span class="sig-paren">(</span><em class="sig-param">table='exoplanets', fname: Union[str, pathlib.Path, IO[~AnyStr], NoneType] = None, default_pars: bool = False, local: bool = False, **kwargs</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="../_modules/exosherlock/database.html#get_exoarchive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#exosherlock.get_exoarchive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a table form the NASA Exoplanet Archive as a pandas DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>table</strong><span class="classifier">str, optional</span></dt><dd><p>Which table from the exoplanet archive will be read. Used for custom dtypes
+which reduce memory usage and allow extra functionalities compared to
+automatic dtype parsing.</p>
+</dd>
+<dt><strong>fname</strong><span class="classifier">str, optional</span></dt><dd><p>Name of the file to import as dataframe. By default, the csv file provided
+by the package is loaded. Ignored if <code class="docutils literal notranslate"><span class="pre">local==False</span></code>.</p>
+</dd>
+<dt><strong>default_pars</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, returns only the subset with <code class="docutils literal notranslate"><span class="pre">default_flag</span> <span class="pre">==</span> <span class="pre">1</span></code>.</p>
+</dd>
+<dt><strong>local</strong><span class="classifier">bool, optional</span></dt><dd><p>When true, the local csv file at <code class="docutils literal notranslate"><span class="pre">fname</span></code> is read.</p>
+</dd>
+<dt><strong>kwargs</strong></dt><dd><p>Passed to <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html#pandas.read_csv" title="(in pandas v1.0.5)"><code class="docutils literal notranslate"><span class="pre">pandas.read_csv()</span></code></a></p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>pandas.DataFrame</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="exosherlock.get_from_exoarchive.html" class="btn btn-neutral float-right" title="exosherlock.get_from_exoarchive" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../api.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Mariona Badenas-Agusti, Oriol Abril-Pla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  <script>
+    var versions_json_url = ''
+</script>
+
+<div class="rst-versions" data-toggle="rst-versions" role="note"
+     aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+        0.1.0
+      <span class="fa fa-caret-down"></span>
+    </span>
+
+    <div class="rst-other-versions">
+        <dl id="versionselector">
+            <dt>Other Versions</dt>
+        </dl>
+
+    </div>
+</div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

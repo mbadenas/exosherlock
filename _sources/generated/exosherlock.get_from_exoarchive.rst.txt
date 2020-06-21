@@ -1,0 +1,6 @@
+exosherlock.get\_from\_exoarchive
+=================================
+
+.. currentmodule:: exosherlock
+
+.. autofunction:: get_from_exoarchive

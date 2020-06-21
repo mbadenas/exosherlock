@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>exosherlock.core &mdash; exosherlock 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/msmb.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="../../_static/js/versions.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/exosherlock_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">exosherlock</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>exosherlock.core</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for exosherlock.core</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Core selection functions.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+
+<span class="kn">from</span> <span class="nn">.database</span> <span class="kn">import</span> <span class="n">get_exoarchive</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;update_columns_with_min_err&quot;</span><span class="p">,</span> <span class="s2">&quot;get_from_exoarchive&quot;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_get_min_value</span><span class="p">(</span><span class="n">col_name</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+    <span class="n">ref_colname</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_refname&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;pl_name&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="p">[</span><span class="n">tmp</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">tmp</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">err1&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">err2&quot;</span><span class="p">)]</span>
+        <span class="o">+</span> <span class="p">[</span><span class="n">ref_colname</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">df_aux</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">err_col</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_err&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col_name</span><span class="p">)</span>
+    <span class="n">df_aux</span> <span class="o">=</span> <span class="n">df_aux</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">err_col</span><span class="p">:</span> <span class="p">(</span><span class="n">df_aux</span><span class="p">[</span><span class="n">cols</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">+</span> <span class="n">df_aux</span><span class="p">[</span><span class="n">cols</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">})</span>
+    <span class="n">df_aux</span> <span class="o">=</span> <span class="n">df_aux</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">ref_colname</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_ref&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col_name</span><span class="p">)})</span>
+    <span class="n">idxs</span> <span class="o">=</span> <span class="n">df_aux</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;pl_name&quot;</span><span class="p">)[</span><span class="n">err_col</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+    <span class="n">df_aux</span> <span class="o">=</span> <span class="n">df_aux</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idxs</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">err_col</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df_aux</span>
+
+
+<span class="k">def</span> <span class="nf">_update_column_with_min_err</span><span class="p">(</span><span class="n">col_name</span><span class="p">,</span> <span class="n">df_orig</span><span class="p">,</span> <span class="n">df_fin</span><span class="p">):</span>
+    <span class="n">df_aux</span> <span class="o">=</span> <span class="n">_get_min_value</span><span class="p">(</span><span class="n">col_name</span><span class="p">,</span> <span class="n">df_orig</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;pl_name&quot;</span><span class="p">)</span>
+    <span class="o">*</span><span class="n">cols</span><span class="p">,</span> <span class="n">ref_col</span> <span class="o">=</span> <span class="n">df_aux</span><span class="o">.</span><span class="n">columns</span>
+    <span class="n">df_fin</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_aux</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_aux</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+    <span class="n">df_fin</span><span class="p">[</span><span class="n">ref_col</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">df_fin</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_aux</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">ref_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_aux</span><span class="p">[</span><span class="n">ref_col</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">df_fin</span>
+
+
+<div class="viewcode-block" id="update_columns_with_min_err"><a class="viewcode-back" href="../../generated/exosherlock.update_columns_with_min_err.html#exosherlock.update_columns_with_min_err">[docs]</a><span class="k">def</span> <span class="nf">update_columns_with_min_err</span><span class="p">(</span>
+    <span class="n">col_names</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+    <span class="n">df_orig</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">df_fin</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">pre_queries</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">post_query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Update columns of dataframe to a unique value per planet.</span>
+
+<span class="sd">    For every column in the ``col_names`` the selected value will be the one with</span>
+<span class="sd">    minimum error.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    col_names : str of list of str</span>
+<span class="sd">    df_orig : pandas.Dataframe</span>
+<span class="sd">    df_fin : pandas.Dataframe</span>
+<span class="sd">    queries : dict of {str: str}, optional</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.Dataframe</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">pre_queries</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pre_queries</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">col_name</span> <span class="ow">in</span> <span class="n">col_names</span><span class="p">:</span>
+        <span class="n">df_aux</span> <span class="o">=</span> <span class="n">df_orig</span>
+        <span class="k">if</span> <span class="n">col_name</span> <span class="ow">in</span> <span class="n">pre_queries</span><span class="p">:</span>
+            <span class="n">df_fin</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">df_aux</span> <span class="o">=</span> <span class="n">df_orig</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">pre_queries</span><span class="p">[</span><span class="n">col_name</span><span class="p">])</span>
+        <span class="n">df_fin</span> <span class="o">=</span> <span class="n">_update_column_with_min_err</span><span class="p">(</span><span class="n">col_name</span><span class="p">,</span> <span class="n">df_aux</span><span class="p">,</span> <span class="n">df_fin</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pre_queries</span><span class="p">:</span>
+        <span class="n">df_fin</span> <span class="o">=</span> <span class="n">df_fin</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">pre_queries</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;any&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">post_query</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">df_fin</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">post_query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df_fin</span></div>
+
+
+<div class="viewcode-block" id="get_from_exoarchive"><a class="viewcode-back" href="../../generated/exosherlock.get_from_exoarchive.html#exosherlock.get_from_exoarchive">[docs]</a><span class="k">def</span> <span class="nf">get_from_exoarchive</span><span class="p">(</span>
+    <span class="n">col_names</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+    <span class="n">pre_queries</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">post_query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Download dataframe NASA Exoplanet Archive and query it.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    col_names : str of list of str</span>
+<span class="sd">    pre_queries : dict of {str: str}, optional</span>
+<span class="sd">    post_query : str, optional</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Passed as is to :func:`get_exoarchive`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">exoarchive</span> <span class="o">=</span> <span class="n">get_exoarchive</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">df_final</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">exoarchive</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;default_flag == 1&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;default_flag&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;pl_name&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">df_final</span> <span class="o">=</span> <span class="n">update_columns_with_min_err</span><span class="p">(</span>
+        <span class="n">col_names</span><span class="p">,</span> <span class="n">exoarchive</span><span class="p">,</span> <span class="n">df_final</span><span class="p">,</span> <span class="n">pre_queries</span><span class="p">,</span> <span class="n">post_query</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">df_final</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Mariona Badenas-Agusti, Oriol Abril-Pla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  <script>
+    var versions_json_url = ''
+</script>
+
+<div class="rst-versions" data-toggle="rst-versions" role="note"
+     aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+        0.1.0
+      <span class="fa fa-caret-down"></span>
+    </span>
+
+    <div class="rst-other-versions">
+        <dl id="versionselector">
+            <dt>Other Versions</dt>
+        </dl>
+
+    </div>
+</div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
