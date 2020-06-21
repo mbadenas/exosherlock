@@ -12,7 +12,14 @@ from ._dtypes import DTYPES_CONFIRMED, DTYPES_PS
 __all__ = ["get_exoarchive", "load_catalog"]
 
 BASE_URL = "https://exoplanetarchive.ipac.caltech.edu"
-OLD_API_TABLES = ("exoplanets", "compositepars", "exomultpars", "aliastable", "microlensing")
+OLD_API_TABLES = (
+    "exoplanets",
+    "compositepars",
+    "exomultpars",
+    "aliastable",
+    "microlensing",
+)
+
 
 def _download_ps_table():
     exoarch = TapPlus(url="https://exoplanetarchive.ipac.caltech.edu/TAP")
@@ -22,29 +29,34 @@ def _download_ps_table():
     setattr(df, "_is_ps_table", True)
     return df
 
+
 def _download_old_api_table(table):
     dtype = None
     if table == "exoplanets":
         dtype = DTYPES_CONFIRMED
-    fname = f"https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table={table}&select=*&formal=csv"
+    fname = (
+        f"{BASE_URL}/cgi-bin/nstedAPI/nph-nstedAPI?table={table}&select=*&formal=csv"
+    )
     df = pd.read_csv(fname, dtype=dtype)
     setattr(df, "_is_ps_table", False)
     return df
 
+
 def _read_local_catalog(fname, **kwargs):
+    kwargs.setdefault("comment", "#")
     aux_kwargs = kwargs.copy()
-    aux_kwargs.pop("usecols")
+    aux_kwargs.pop("usecols", None)
     aux = pd.read_csv(fname, usecols=["pl_name"], **aux_kwargs)
-    is_ps_table = np.unique(aux.pl_name) < len(aux.pl_name)
+    is_ps_table = len(np.unique(aux.pl_name)) < len(aux.pl_name)
     if is_ps_table:
         kwargs.setdefault("dtype", DTYPES_PS)
         df = pd.read_csv(fname, **kwargs)
     else:
         try:
-            #TODO: clever way to see if table is of confirmed planets?
+            # TODO: clever way to see if table is of confirmed planets?
             aux_kwargs = kwargs.copy()
             aux_kwargs.setdefault("dtype", DTYPES_CONFIRMED)
-            df = pd.read_csv(fname, **aux_kwargs)
+            df = pd.read_csv(fname, **kwargs)
         except:
             # no dtype goodness, users are on their own, either they pass dtype info
             # as kwarg or get warnings and "bad" behaviour
@@ -52,8 +64,10 @@ def _read_local_catalog(fname, **kwargs):
     setattr(df, "_is_ps_table", is_ps_table)
     return df
 
+
 def _download_from_figshare():
     raise ValueError("_download_from_figshare() is not implemented yet")
+
 
 def load_catalog(table: Optional[FilePathOrBuffer] = None, **kwargs):
     """Load a local or remote catalog as pandas DataFrame.
@@ -77,11 +91,12 @@ def load_catalog(table: Optional[FilePathOrBuffer] = None, **kwargs):
         return _download_from_figshare()
     return _read_local_catalog(table, **kwargs)
 
+
 def get_exoarchive(
     table="exoplanets",
     fname: Optional[FilePathOrBuffer] = None,
     default_pars: bool = False,
-    local: bool=False,
+    local: bool = False,
     **kwargs,
 ) -> pd.DataFrame:
     """Read a table form the NASA Exoplanet Archive as a pandas DataFrame.
@@ -113,7 +128,7 @@ def get_exoarchive(
             if files:
                 fname = files[0]
     else:
-        #TODO: use astroquery
+        # TODO: use astroquery
         if table == "ps":
             fname = f"{BASE_URL}/TAP/sync?query=select+*+from+ps&format=csv"
         else:
